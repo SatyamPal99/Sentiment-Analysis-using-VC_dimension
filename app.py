@@ -613,22 +613,22 @@ run_vc       = st.sidebar.button("▶ Run VC Experiment")
 
 # ─── Load Data ───────────────────────────────────────────────────────────────
 
-# added line...
 DATA_PATH = "data/sentiment_dataset.csv"
 
-if not os.path.exists(DATA_PATH):
+if os.path.exists(DATA_PATH):
+    try:
+        data, removed = load_and_prepare_data(
+            DATA_PATH,
+            label_mapping={"negative": 0, "positive": 1}
+        )
+    except (FileNotFoundError, ValueError) as e:
+        st.error(str(e))
+        st.stop()
+else:
     st.warning("Dataset not found. Using sample data.")
-    data = load_hf_dataset("tweet_eval", "sentiment")[0]
 
-# above is added line....
-
-if not os.path.exists(DATA_PATH):
-    st.error(f"Dataset not found at: {DATA_PATH}")
-    st.stop()
-try:
-    data, removed = load_and_prepare_data(DATA_PATH, label_mapping={"negative": 0, "positive": 1})
-except (FileNotFoundError, ValueError) as e:
-    st.error(str(e)); st.stop()
+    from sentiment.hf_utils import load_hf_dataset
+    data, removed = load_hf_dataset("tweet_eval", "sentiment")
 
 # ─── Train / Load ─────────────────────────────────────────────────────────────
 
