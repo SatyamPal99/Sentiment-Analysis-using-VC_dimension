@@ -625,7 +625,7 @@ if os.path.exists(DATA_PATH):
         st.error(str(e))
         st.stop()
 else:
-    st.info("Using HuggingFace dataset (tweet_eval) as fallback.")
+    st.success("Running on live dataset (tweet_eval)")
 
     from sentiment.hf_utils import load_hf_dataset
     data, removed = load_hf_dataset("tweet_eval", "sentiment")
