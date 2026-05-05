@@ -613,7 +613,15 @@ run_vc       = st.sidebar.button("▶ Run VC Experiment")
 
 # ─── Load Data ───────────────────────────────────────────────────────────────
 
+# added line...
 DATA_PATH = "data/sentiment_dataset.csv"
+
+if not os.path.exists(DATA_PATH):
+    st.warning("Dataset not found. Using sample data.")
+    data = load_hf_dataset("tweet_eval", "sentiment")[0]
+
+# above is added line....
+
 if not os.path.exists(DATA_PATH):
     st.error(f"Dataset not found at: {DATA_PATH}")
     st.stop()
